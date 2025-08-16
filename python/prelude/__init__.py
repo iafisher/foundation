@@ -19,7 +19,11 @@ from typing import (
     Tuple,
     Union,
 )
-from typing_extensions import override
+
+try:
+    from typing_extensions import override
+except ModuleNotFoundError:
+    pass
 
 
 from .prelude import (
