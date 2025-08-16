@@ -1,9 +1,9 @@
 #!/bin/bash
 
-source "$IAN_PRELUDE"
+source "$IAN_BASH_PRELUDE"
 
 main() {
-  __expect_zero_args "$@" || return 1
+  __assert_zero_args "$@" || return 1
 
   cd "$HOME/.ian/foundation"
   git pull origin master
