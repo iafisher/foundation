@@ -12,7 +12,6 @@ from typing import (
     NoReturn,
     Optional,
     Protocol,
-    Self,
     TypeVar,
     Union,
     runtime_checkable,
@@ -128,7 +127,7 @@ def map_str_or_none(x: Optional[str], f: Callable[[str], T4]) -> Optional[T4]:
 
 class StringEnum(enum.Enum):
     @classmethod
-    def of_string(cls, s: str) -> Self:
+    def of_string(cls, s: str) -> "Self":
         s_upper = s.upper()
         for key, val in cls.__members__.items():
             if s_upper == key:
