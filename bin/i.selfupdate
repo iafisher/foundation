@@ -1,0 +1,12 @@
+#!/bin/bash
+
+source "$IAN_PRELUDE"
+
+main() {
+  __expect_no_args "$@"
+
+  cd "$HOME/.ian/foundation"
+  git pull origin master
+}
+
+main "$@"
