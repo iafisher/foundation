@@ -3,7 +3,7 @@
 source "$IAN_PRELUDE"
 
 main() {
-  __expect_no_args "$@"
+  __expect_zero_args "$@" || return 1
 
   cd "$HOME/.ian/foundation"
   git pull origin master

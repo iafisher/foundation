@@ -1,4 +1,4 @@
 export IAN_DIR="$HOME/.ian"
-export IAN_PRELUDE="$IAN_DIR/dotfiles/shell/bash_functions.sh"
-export PATH="$PATH:$IAN_DIR/dotfiles/bin:$IAN_DIR/bin"
+export IAN_PRELUDE="$IAN_DIR/foundation/shell/bash_functions.sh"
+export PATH="$PATH:$IAN_DIR/foundation/bin:$IAN_DIR/bin"
 export PYTHONPATH="$PYTHONPATH:$IAN_DIR/pythonpath"
