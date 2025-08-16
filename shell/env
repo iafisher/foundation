@@ -1,8 +1,4 @@
-d="$(dirname "$(realpath "$0")")"
-
-export IAN_PRELUDE="$d/shell/bash_functions.sh"
 export IAN_DIR="$HOME/.ian"
-export PATH="$PATH:$d/bin:$IAN_DIR/bin"
+export IAN_PRELUDE="$IAN_DIR/dotfiles/shell/bash_functions.sh"
+export PATH="$PATH:$IAN_DIR/dotfiles/bin:$IAN_DIR/bin"
 export PYTHONPATH="$PYTHONPATH:$IAN_DIR/pythonpath"
-
-unset d
