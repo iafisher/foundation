@@ -20,11 +20,11 @@ main() {
   foundation_dir="$HOME/.ian/foundation"
   git clone 'https://github.com/iafisher/foundation.git' "$foundation_dir"
 
-  (cat << EOF
-
-source "$foundation_dir/shell/env"
-EOF
-) >> "$HOME/.bashrc"
+  echo
+  echo "Please add the following line to your shell config:"
+  echo
+  echo "  source \$HOME/.ian/foundation/shell/env"
+  echo
 }
 
 main "$@"
