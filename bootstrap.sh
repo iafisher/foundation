@@ -7,7 +7,6 @@ main() {
     echo "bootstrap.sh takes no arguments."
     exit 1
   fi
-  code_dir="$1"
 
   if ! command -v git &>/dev/null; then
     echo "git must be installed."
