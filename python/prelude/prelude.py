@@ -1,7 +1,6 @@
 import enum
 import itertools
 import os
-import pathlib
 import sys
 from typing import (
     Any,
@@ -24,8 +23,7 @@ PathLike = Union[os.PathLike[str], str]
 
 
 class SupportsWrite(Protocol):
-    def write(self, s: str, /) -> int:
-        ...
+    def write(self, s: str, /) -> int: ...
 
 
 class KgError(Exception):
@@ -86,8 +84,7 @@ def pluralize(n: int, word: str, plural: str = "") -> str:
 
 @runtime_checkable
 class SupportsGreaterThan(Protocol):
-    def __gt__(self, other: object) -> bool:
-        ...
+    def __gt__(self, other: object) -> bool: ...
 
 
 T = TypeVar("T", bound=SupportsGreaterThan)
@@ -127,7 +124,7 @@ def map_str_or_none(x: Optional[str], f: Callable[[str], T4]) -> Optional[T4]:
 
 class StringEnum(enum.Enum):
     @classmethod
-    def of_string(cls, s: str) -> "Self":
+    def of_string(cls, s: str) -> "StringEnum":
         s_upper = s.upper()
         for key, val in cls.__members__.items():
             if s_upper == key:
