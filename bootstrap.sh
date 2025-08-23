@@ -9,7 +9,7 @@ main() {
   fi
 
   code_dir="$1"
-  dotfiles_dir="$code_dir/dotfiles"
+  dotfiles_dir="$(realpath "$code_dir/dotfiles")"
 
   if ! command -v git &>/dev/null; then
     echo "git must be installed."
@@ -33,7 +33,15 @@ main() {
   cp "$foundation_dir/assets/gitignore" .gitignore
   git add .gitignore
 
+  cp "$foundation_dir/assets/vimrc" vimrc
+  git add vimrc
+
+  uses_zsh=0
   if [[ "$SHELL" = *zsh ]]; then
+    uses_zsh=1
+  fi
+
+  if (( uses_zsh == 1 )); then
     shellrc="zshrc"
   else
     shellrc="bashrc"
@@ -49,12 +57,22 @@ main() {
   git clone . "$HOME/.ian/dotfiles"
   git config --local receive.denyCurrentBranch updateInstead
 
+  if ! [[ -e "$HOME/.vimrc" ]]; then
+    echo "==> symlinking ~/.vimrc"
+    ln -s "$HOME/.ian/dotfiles/vimrc" "$HOME/.vimrc"
+  else
+    echo "warning: not replacing existing ~/.vimrc file with symlink to ~/.ian/dotfiles/vimrc"
+  fi
+
+  echo "==> appending to ~/.$shellrc"
+  f="$HOME/.$shellrc"
+  echo >> "$f"
+  echo 'source "$HOME/.ian/foundation/shell/env"' >> "$f"
+  echo 'source "$HOME/.ian/dotfiles/'$shellrc'"' >> "$f"
+  tail "$f"
+
   echo
-  echo "Please add the following line to your shell config:"
-  echo
-  echo "  source \"$HOME/.ian/foundation/shell/env\""
-  echo "  source \"$dotfiles_dir/$shellrc\""
-  echo
+  echo "==> done"
 }
 
 main "$@"
