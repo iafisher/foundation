@@ -5,7 +5,7 @@ cmd = ["iprecommit-no-forbidden-strings", "--paths"]
 [[pre_commit]]
 name = "NewlineAtEndOfFile"
 cmd = ["iprecommit-newline-at-eof"]
-autofix = true
+autofix = false
 fail_fast = true
 fix_cmd = ["iprecommit-newline-at-eof", "--fix"]
 
@@ -18,7 +18,7 @@ name = "PythonFormat"
 cmd = ["black", "--check"]
 filters = ["*.py"]
 fix_cmd = ["black"]
-autofix = true
+autofix = false
 fail_fast = true
 
 # commit-msg checks
