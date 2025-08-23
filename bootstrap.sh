@@ -20,6 +20,7 @@ main() {
   mkdir -p "$HOME/.ian"
   mkdir -p "$HOME/.ian/bin"
   mkdir -p "$HOME/.ian/pythonpath"
+  mkdir -p "$HOME/.vim-backup"
 
   echo "==> cloning 'foundation' repo"
   foundation_dir="$HOME/.ian/foundation"
@@ -67,8 +68,8 @@ main() {
   echo "==> appending to ~/.vimrc"
   f="$HOME/.vimrc"
   echo >> "$f"
-  echo 'source "$HOME/.ian/foundation/vimrc"' >> "$f"
-  echo 'source "$HOME/.ian/dotfiles/vimrc"' >> "$f"
+  echo 'source $HOME/.ian/foundation/vimrc' >> "$f"
+  echo 'source $HOME/.ian/dotfiles/vimrc' >> "$f"
   tail "$f"
 
   echo "==> appending to ~/.gitconfig"

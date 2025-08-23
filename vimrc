@@ -7,6 +7,8 @@ set encoding=utf-8
 set showmatch
 
 " Save swap files here instead of alongside the file
+" 
+" NOTE: This requires the directory to be created in `bootstrap.sh`
 set directory=~/.vim-backup
 
 " From https://dougblack.io/words/a-good-vimrc.html
