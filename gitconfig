@@ -1,0 +1,17 @@
+[init]
+	defaultBranch = master
+[alias]
+	st = status
+	unstage = restore --staged
+	co = checkout
+	cmt = commit -v
+	amend = commit --amend --no-edit
+	br = branch -v
+	rstr = restore
+	rbi = rebase -i
+	rbc = rebase --continue
+	last = log --name-only -1 HEAD
+	lastmsg = log -1 --format=%B HEAD
+	rb = rebase
+	brd = br -d
+	nb = checkout -b

@@ -71,6 +71,17 @@ main() {
   echo 'source "$HOME/.ian/dotfiles/vimrc"' >> "$f"
   tail "$f"
 
+  echo "==> appending to ~/.gitconfig"
+  f="$HOME/.gitconfig"
+  (cat << EOF
+
+[include]
+  path = $HOME/.ian/foundation/gitconfig
+  path = $HOME/.ian/dotfiles/gitconfig
+EOF
+) >> "$f"
+  tail "$f"
+
   echo
   echo "==> done"
 }
