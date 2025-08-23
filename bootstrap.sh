@@ -33,9 +33,6 @@ main() {
   cp "$foundation_dir/assets/gitignore" .gitignore
   git add .gitignore
 
-  cp "$foundation_dir/assets/vimrc" vimrc
-  git add vimrc
-
   uses_zsh=0
   if [[ "$SHELL" = *zsh ]]; then
     uses_zsh=1
@@ -50,6 +47,9 @@ main() {
   echo "# This file contains machine-specific configuration." > "$shellrc"
   git add "$shellrc"
 
+  echo '" This file contains machine-specific configuration.' > vimrc
+  git add vimrc
+
   git config --global user.name 'Ian Fisher'
   git config --global user.email 'ian@iafisher.com'
   git commit -m "initial commit" --author 'Ian Fisher <ian@iafisher.com>'
@@ -57,18 +57,18 @@ main() {
   git clone . "$HOME/.ian/dotfiles"
   git config --local receive.denyCurrentBranch updateInstead
 
-  if ! [[ -e "$HOME/.vimrc" ]]; then
-    echo "==> symlinking ~/.vimrc"
-    ln -s "$HOME/.ian/dotfiles/vimrc" "$HOME/.vimrc"
-  else
-    echo "warning: not replacing existing ~/.vimrc file with symlink to ~/.ian/dotfiles/vimrc"
-  fi
-
   echo "==> appending to ~/.$shellrc"
   f="$HOME/.$shellrc"
   echo >> "$f"
   echo 'source "$HOME/.ian/foundation/shell/env"' >> "$f"
   echo 'source "$HOME/.ian/dotfiles/'$shellrc'"' >> "$f"
+  tail "$f"
+
+  echo "==> appending to ~/.vimrc"
+  f="$HOME/.vimrc"
+  echo >> "$f"
+  echo 'source "$HOME/.ian/foundation/vimrc"' >> "$f"
+  echo 'source "$HOME/.ian/dotfiles/vimrc"' >> "$f"
   tail "$f"
 
   echo
