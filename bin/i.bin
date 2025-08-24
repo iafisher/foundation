@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+source "$IAN_BASH_PRELUDE"
+
+main() {
+  set -u
+  __parse_flags 'PATH [--name=]' "$@"
+  path="${__args[PATH]}"
+  name="${__args[--name]}"
+
+  if [[ -z "$name" ]]; then
+    name="$(basename "$path")"
+  fi
+
+  if [[ "$name" = */* ]]; then
+    fatal "name cannot contain slashes"
+  fi
+
+  dest="$HOME/.ian/bin/$name"
+  if [[ -e "$dest" ]]; then
+    fatal "$dest already exists"
+  fi
+
+  ln -s "$path" "$dest"
+  status "created link at $dest"
+}
+
+main "$@"
