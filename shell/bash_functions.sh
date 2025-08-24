@@ -117,50 +117,73 @@ ian_parse_flags() {
     esac
   done
 
+  __do_positional() {
+    if (( ${#known_positionals[@]} > 0 )); then
+      __args["${known_positionals[0]}"]="$1"
+      known_positionals=("${known_positionals[@]:1}")
+    else
+      __usage_error "too many anonymous arguments (at '$1')"
+    fi
+  }
+
+  flags_done="0"
   while (( $# > 0 )); do
     arg="$1"
+    shift
     case "$arg" in
       -h|-help|--help)
         echo "usage: $cmd $desc"
         exit 0
         ;;
+      -)
+        __do_positional "$arg"
+        ;;
+      --)
+        flags_done="1"
+        ;;
       -*)
-        if [[ -v required_flags["$arg"] ]]; then
-          b="${required_flags[$arg]}"
-          (( b == 1 )) && __usage_error "flag: $arg was repeated"
-          required_flags["$arg"]="1"
-
-          (( $# == 1 )) && __usage_error "flag $arg requires an argument"
-          __args["$arg"]="$2"
-          shift 2
-        elif [[ -v optional_flags["$arg"] ]]; then
-          b="${optional_flags[$arg]}"
-          (( b == 1 )) && __usage_error "flag $arg was repeated"
-          optional_flags["$arg"]="1"
-
-          (( $# == 1 )) && __usage_error "flag $arg requires an argument"
-          __args["$arg"]="$2"
-          shift 2
-        elif [[ -v known_switches["$arg"] ]]; then
-          b="${known_switches[$arg]}"
-          (( b == 1 )) && __usage_error "flag $arg was repeated"
-          known_switches["$arg"]="1"
-          __args["$arg"]="1"
-          shift
+        if (( flags_done == 1 )); then
+          __do_positional "$arg"
         else
-          __usage_error "unknown flag $arg"
+          if [[ -v required_flags["$arg"] ]]; then
+            b="${required_flags[$arg]}"
+            (( b == 1 )) && __usage_error "flag: $arg was repeated"
+            required_flags["$arg"]="1"
+
+            if (( $# == 0 )) || [[ "$1" = -* ]]; then
+              __usage_error "flag $arg requires an argument"
+            fi
+
+            __args["$arg"]="$1"
+            shift
+          elif [[ -v optional_flags["$arg"] ]]; then
+            b="${optional_flags[$arg]}"
+            (( b == 1 )) && __usage_error "flag $arg was repeated"
+            optional_flags["$arg"]="1"
+
+            if (( $# == 0 )) || [[ "$1" = -* ]]; then
+              __usage_error "flag $arg requires an argument"
+            fi
+
+            __args["$arg"]="$1"
+            shift
+          elif [[ -v known_switches["$arg"] ]]; then
+            b="${known_switches[$arg]}"
+            (( b == 1 )) && __usage_error "flag $arg was repeated"
+            known_switches["$arg"]="1"
+            __args["$arg"]="1"
+          else
+            __usage_error "unknown flag $arg"
+          fi
         fi
         ;;
       *)
-        if (( ${#known_positionals[@]} > 0 )); then
-          __args["${known_positionals[0]}"]="$arg"
-          known_positionals=("${known_positionals[@]:1}")
-          shift
-        else
-          __usage_error "too many anonymous arguments (at '$arg')"
-        fi
+        __do_positional "$arg"
+        ;;
     esac
   done
+
+  unset __do_positional
 
   if (( ${#known_positionals[@]} > 0 )); then
     __usage_error "missing anonymous argument '${known_positionals[0]}'"
