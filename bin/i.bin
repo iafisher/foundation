@@ -45,7 +45,7 @@ main_remove() {
   fi
 
   p="$D/$name"
-  [[ -L "$p" ]] || fatal "the path '$p' does not exist"
+  [[ -e "$p" ]] || [[ -L "$p" ]] || fatal "the path '$p' does not exist"
 
   rm -f "$p"
   status "removed executable '$name'"
