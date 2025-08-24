@@ -1,9 +1,10 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
+set -eu
 source "$IAN_BASH_PRELUDE"
 
 main() {
-  __assert_zero_args "$@" || return 1
+  ian_parse_flags '' "$@"
 
   cd "$HOME/.ian/foundation"
   git pull origin master
