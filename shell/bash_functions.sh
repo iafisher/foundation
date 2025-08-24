@@ -123,7 +123,7 @@ __parse_flags() {
     arg="$1"
     case "$arg" in
       -h|-help|--help)
-        echo "Usage: $desc"
+        echo "usage: $0 $desc"
         exit 0
         ;;
       -*)
