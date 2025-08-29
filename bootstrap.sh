@@ -55,21 +55,18 @@ main() {
   git config --global user.email 'ian@iafisher.com'
   git commit -m "initial commit" --author 'Ian Fisher <ian@iafisher.com>'
 
-  git clone . "$HOME/.ian/dotfiles"
-  git config --local receive.denyCurrentBranch updateInstead
-
   echo "==> appending to ~/.$shellrc"
   f="$HOME/.$shellrc"
   echo >> "$f"
   echo 'source "$HOME/.ian/foundation/shell/env"' >> "$f"
-  echo 'source "$HOME/.ian/dotfiles/'$shellrc'"' >> "$f"
+  echo 'source "'$dotfiles_dir'/'$shellrc'"' >> "$f"
   tail "$f"
 
   echo "==> appending to ~/.vimrc"
   f="$HOME/.vimrc"
   echo >> "$f"
   echo 'source $HOME/.ian/foundation/vimrc' >> "$f"
-  echo 'source $HOME/.ian/dotfiles/vimrc' >> "$f"
+  echo 'source '$dotfiles_dir'/vimrc' >> "$f"
   tail "$f"
 
   echo "==> appending to ~/.gitconfig"
@@ -78,7 +75,7 @@ main() {
 
 [include]
   path = $HOME/.ian/foundation/gitconfig
-  path = $HOME/.ian/dotfiles/gitconfig
+  path = $dotfiles_dir/gitconfig
 EOF
 ) >> "$f"
   tail "$f"
