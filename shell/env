@@ -17,7 +17,8 @@ i.cmd-exists() {
 
 e() {
   fuzzy() {
-    local d="${1:-.}"
+    # adding a slash ensures that symlinks are resolved
+    local d="${1:-.}/"
     if git -C "$d" status &>/dev/null; then
       # `git ls-files` produces relative paths which we have to make absolute
       choice="$d/$(git -C "$d" ls-files | fzf --exit-0)"
