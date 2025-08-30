@@ -16,7 +16,7 @@ i.cmd-exists() {
 }
 
 e() {
-  local fuzzy() {
+  fuzzy() {
     local d="$1"
     choice="$( ( git -C "$d" status &>/dev/null && git -C "$d" ls-files || find "$d" -type f ) | fzf --exit-0)"
     [[ -n "$choice" ]] && "$EDITOR" "$d/$choice"
@@ -27,6 +27,8 @@ e() {
   else
     "$EDITOR" "$@"
   fi
+
+  unset fuzzy
 }
 
 s() {
