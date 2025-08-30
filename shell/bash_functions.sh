@@ -19,7 +19,7 @@ gray() {
 }
 
 error() {
-  echo "$(red error:) $@" >&2
+  echo -e "$(red error:) $@" >&2
 }
 
 fatal() {
@@ -28,7 +28,7 @@ fatal() {
 }
 
 status() {
-  echo "==> $@"
+  echo -e "==> $@"
 }
 
 # TODO(2025-08): Replace uses of these functions with `ian_parse_flags`.
