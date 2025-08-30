@@ -26,15 +26,15 @@ s() {
   fi
 
   if [[ $# -eq 0 ]]; then
-    "$ls" .
+    $ls .
   else
     for arg in "$@"
     do
       if test -d "$arg"
       then
-        "$ls" "$arg"
+        $ls "$arg"
       else
-        "$cat" "$arg"
+        $cat "$arg"
       fi
     done
   fi
