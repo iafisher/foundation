@@ -12,12 +12,16 @@ fi
 export EDITOR="vim"
 alias e="$EDITOR"
 
+i.cmd-exists() {
+  command -v "$1" &>/dev/null
+}
+
 s() {
-  command -v eza &>/dev/null \
+  i.cmd-exists eza \
     && local ls=("eza" "--long" "--git") \
     || local ls=("ls" "-l")
 
-  command -v bat &>/dev/null \
+  i.cmd-exists bat \
     && local cat="bat" \
     || local cat="cat"
 
@@ -30,9 +34,9 @@ s() {
 
 py() {
   if [[ $# -eq 0 ]]; then
-    command -v ipython &>/dev/null && ipython || python
+    i.cmd-exists ipython && ipython || python3
   else
-    python -c "from decimal import Decimal as D; from math import *; print($*)"
+    python3 -c "from decimal import Decimal as D; from math import *; print($*)"
   fi
 }
 
