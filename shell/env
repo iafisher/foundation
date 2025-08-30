@@ -10,10 +10,23 @@ elif [[ "$SHELL" = *zsh ]]; then
 fi
 
 export EDITOR="vim"
-alias e="$EDITOR"
 
 i.cmd-exists() {
   command -v "$1" &>/dev/null
+}
+
+e() {
+  local fuzzy() {
+    local d="$1"
+    choice="$( ( git -C "$d" status &>/dev/null && git -C "$d" ls-files || find "$d" -type f ) | fzf --exit-0)"
+    [[ -n "$choice" ]] && "$EDITOR" "$d/$choice"
+  }
+
+  if i.cmd-exists fzf && [[ $# -eq 0 ]] || [[ -d "$1" ]]; then
+    fuzzy "$1"
+  else
+    "$EDITOR" "$@"
+  fi
 }
 
 s() {
