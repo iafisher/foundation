@@ -6,9 +6,9 @@ export PYTHONPATH="$PYTHONPATH:$IAN_DIR/pythonpath"
 export EDITOR="vim"
 
 if [[ "$SHELL" = *bash ]]; then
-  alias i.refresh='source "$HOME/.bashrc"'
+  alias i.refresh='unalias -a && source "$HOME/.bashrc"'
 elif [[ "$SHELL" = *zsh ]]; then
-  alias i.refresh='source "$HOME/.zshrc"'
+  alias i.refresh='unalias -a && source "$HOME/.zshrc"'
 fi
 
 alias g="git"
