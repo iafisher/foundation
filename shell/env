@@ -32,17 +32,16 @@ e() {
 s() {
   i.cmd-exists eza \
     && local ls=("eza" "--long" "--git") \
-    || local ls=("ls" "-l")
+    || local ls=("ls" "-l" "--color=auto")
 
   i.cmd-exists bat \
     && local cat="bat" \
     || local cat="cat"
 
-  for arg in "$@"
-  do
-    test -d "$arg" && $ls "$arg" || $cat "$arg"
+  for arg in "$@"; do
+    test -d "$arg" && ${ls[@]} "$arg" || $cat "$arg"
   done
-  [[ $# -eq 0 ]] && $ls .
+  [[ $# -eq 0 ]] && ${ls[@]} .
 }
 
 py() {
