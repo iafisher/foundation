@@ -13,31 +13,19 @@ export EDITOR="vim"
 alias e="$EDITOR"
 
 s() {
-  if command -v eza &>/dev/null; then
-    local ls="eza --long --git"
-  else
-    local ls="ls -l"
-  fi
+  command -v eza &>/dev/null \
+    && local ls=("eza" "--long" "--git") \
+    || local ls=("ls" "-l")
 
-  if command -v bat &>/dev/null; then
-    local cat="bat"
-  else
-    local cat="cat"
-  fi
+  command -v bat &>/dev/null \
+    && local cat="bat" \
+    || local cat="cat"
 
-  if [[ $# -eq 0 ]]; then
-    $ls .
-  else
-    for arg in "$@"
-    do
-      if test -d "$arg"
-      then
-        $ls "$arg"
-      else
-        $cat "$arg"
-      fi
-    done
-  fi
+  for arg in "$@"
+  do
+    test -d "$arg" && $ls "$arg" || $cat "$arg"
+  done
+  [[ $# -eq 0 ]] && $ls .
 }
 
 py() {
