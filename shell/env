@@ -17,9 +17,15 @@ i.cmd-exists() {
 
 e() {
   fuzzy() {
-    local d="$1"
-    choice="$( ( git -C "$d" status &>/dev/null && git -C "$d" ls-files || find "$d" -type f ) | fzf --exit-0)"
-    [[ -n "$choice" ]] && "$EDITOR" "$d/$choice"
+    local d="${1:-.}"
+    if git -C "$d" status &>/dev/null; then
+      # `git ls-files` produces relative paths which we have to make absolute
+      choice="$d/$(git -C "$d" ls-files | fzf --exit-0)"
+    else
+      # `find` produces absolute paths
+      choice="$(find "$d" -type f | fzf --exit-0)"
+    fi
+    [[ -n "$choice" ]] && "$EDITOR" "$choice"
   }
 
   if i.cmd-exists fzf && [[ $# -eq 0 ]] || [[ -d "$1" ]]; then
