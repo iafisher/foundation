@@ -84,7 +84,7 @@ def pluralize(n: int, word: str, plural: str = "") -> str:
 
 @runtime_checkable
 class SupportsGreaterThan(Protocol):
-    def __gt__(self, other: object) -> bool: ...
+    def __gt__(self, _other: object) -> bool: ...
 
 
 T = TypeVar("T", bound=SupportsGreaterThan)
