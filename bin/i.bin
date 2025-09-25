@@ -32,8 +32,8 @@ main_add() {
 
 main_list() {
   shopt -s nullglob
-  printf "%s\0" "$D"/* | while IFS= read -r -d '' file; do
-    echo $(basename "$file") "-->" $(readlink "$file")
+  for p in "$D"/*; do
+    echo $(basename "$p") "-->" $(readlink "$p")
   done
   shopt -u nullglob
 }
