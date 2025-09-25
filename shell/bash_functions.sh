@@ -73,7 +73,7 @@ declare -A __args
 ian_parse_flags() {
   if (( $# == 0 )); then
     echo "BUG: ian_parse_flags takes at least one argument"
-    exit 1
+    return 1
   fi
 
   desc="$1"
@@ -84,7 +84,7 @@ ian_parse_flags() {
     echo "usage: $cmd $desc"
     echo
     echo "error: $1"
-    exit 1
+    return 1
   }
 
   known_positionals=()
@@ -122,7 +122,7 @@ ian_parse_flags() {
       __args["${known_positionals[0]}"]="$1"
       known_positionals=("${known_positionals[@]:1}")
     else
-      __usage_error "too many anonymous arguments (at '$1')"
+      __usage_error "too many anonymous arguments (at '$1')" || return 1
     fi
   }
 
@@ -147,33 +147,33 @@ ian_parse_flags() {
         else
           if [[ -v required_flags["$arg"] ]]; then
             b="${required_flags[$arg]}"
-            (( b == 1 )) && __usage_error "flag: $arg was repeated"
+            (( b == 1 )) && __usage_error "flag: $arg was repeated" || return 1
             required_flags["$arg"]="1"
 
             if (( $# == 0 )) || [[ "$1" = -* ]]; then
-              __usage_error "flag $arg requires an argument"
+              __usage_error "flag $arg requires an argument" || return 1
             fi
 
             __args["$arg"]="$1"
             shift
           elif [[ -v optional_flags["$arg"] ]]; then
             b="${optional_flags[$arg]}"
-            (( b == 1 )) && __usage_error "flag $arg was repeated"
+            (( b == 1 )) && __usage_error "flag $arg was repeated" || return 1
             optional_flags["$arg"]="1"
 
             if (( $# == 0 )) || [[ "$1" = -* ]]; then
-              __usage_error "flag $arg requires an argument"
+              __usage_error "flag $arg requires an argument" || return 1
             fi
 
             __args["$arg"]="$1"
             shift
           elif [[ -v known_switches["$arg"] ]]; then
             b="${known_switches[$arg]}"
-            (( b == 1 )) && __usage_error "flag $arg was repeated"
+            (( b == 1 )) && __usage_error "flag $arg was repeated" || return 1
             known_switches["$arg"]="1"
             __args["$arg"]="1"
           else
-            __usage_error "unknown flag $arg"
+            __usage_error "unknown flag $arg" || return 1
           fi
         fi
         ;;
@@ -186,12 +186,12 @@ ian_parse_flags() {
   unset __do_positional
 
   if (( ${#known_positionals[@]} > 0 )); then
-    __usage_error "missing anonymous argument '${known_positionals[0]}'"
+    __usage_error "missing anonymous argument '${known_positionals[0]}'" || return 1
   fi
 
   for flag in "${!required_flags[@]}"; do
     if (( ${required_flags[$flag]} == 0 )); then
-      __usage_error "missing required flag $flag"
+      __usage_error "missing required flag $flag" || return 1
     fi
   done
 
@@ -227,10 +227,10 @@ ian_parse_flags_subcmd() {
         ;;
       -*)
         echo "BUG: unexpected flag: $arg (in ian_parse_flags_subcmd)"
-        exit 1
+        return 1
         ;;
       *)
-        (( $# == 1 )) && ( echo "BUG: subcmd $arg missing description (in ian_parse_flags_subcmd)"; exit 1 )
+        (( $# == 1 )) && ( echo "BUG: subcmd $arg missing description (in ian_parse_flags_subcmd)"; return 1 )
         subcmds["$arg"]="$2"
         subcmds_help+=("  $arg $2")
         shift 2
@@ -250,23 +250,23 @@ ian_parse_flags_subcmd() {
   __usage_error() {
     __print_usage
     echo "error: $1"
-    exit 1
+    return 1
   }
 
   if (( $# == 0 )); then
-    __usage_error "missing subcommand"
+    __usage_error "missing subcommand" || return 1
   fi
 
   if [[ "$1" = -h ]] || [[ "$1" = -help ]] || [[ "$1" = --help ]] || [[ "$1" = help ]]; then
     __print_usage
-    exit
+    return
   fi
 
   __subcmd="$1"
   shift
 
   if ! [[ -v subcmds[$__subcmd] ]]; then
-    __usage_error "unknown subcommand: $__subcmd"
+    __usage_error "unknown subcommand: $__subcmd" || return 1
   fi
   subcmd_desc="${subcmds[$__subcmd]}"
 
