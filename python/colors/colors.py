@@ -40,11 +40,11 @@ def gray(s: str) -> str:
     return _colored(s, 90)
 
 
-_ansi_codes_re = re.compile(r"\033\[[;?0-9]*[a-zA-Z]")
+_ansi_codes_re = lazy_re(r"\033\[[;?0-9]*[a-zA-Z]")
 
 
 def strip(s: str) -> str:
-    return _ansi_codes_re.sub("", s)
+    return _ansi_codes_re.get().sub("", s)
 
 
 def _colored(s: str, code: int) -> str:

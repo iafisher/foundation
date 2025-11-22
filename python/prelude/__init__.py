@@ -39,6 +39,8 @@ from .prelude import (
     eprint,
     flatten_list,
     impossible,
+    lazy,
+    lazy_re,
     map_or_none,
     map_str_or_none,
     max_or_none,

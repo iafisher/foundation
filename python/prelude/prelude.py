@@ -1,11 +1,13 @@
 import enum
 import itertools
 import os
+import re
 import sys
 from typing import (
     Any,
     Callable,
     Dict,
+    Generic,
     Iterable,
     List,
     NoReturn,
@@ -131,6 +133,24 @@ class StringEnum(enum.Enum):
                 return val
 
         raise ValueError(s)
+
+
+T5 = TypeVar("T5")
+
+
+class lazy(Generic[T5]):
+    def __init__(self, f: Callable[[], T5]):
+        self.f = f
+        self.value = NOTHING
+
+    def get(self) -> T5:
+        if self.value is NOTHING:
+            self.value = self.f()
+        return self.value  # type: ignore
+
+
+def lazy_re(pat: str, *args: Any, **kwargs: Any) -> lazy[re.Pattern[str]]:
+    return lazy(lambda: re.compile(pat, *args, **kwargs))
 
 
 def confirm(prompt: str) -> bool:
