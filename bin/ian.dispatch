@@ -1,0 +1,78 @@
+#!/usr/bin/env python3
+import argparse
+import os
+import shlex
+import stat
+import subprocess
+from pathlib import Path
+
+from ian.prelude import *
+from ian.scripting import *
+
+
+force_flag = "-force"
+IAN_DIR = Path.home() / ".ian"
+
+
+def main(exe_path: str, deploy_dir: str, *, name: Optional[str], python: bool, force: bool) -> None:
+    exe_path = os.path.abspath(exe_path)
+    try:
+        statinfo = os.stat(exe_path)
+    except FileNotFoundError:
+        bail(f"{exe_path} does not exist.")
+
+    if name is None:
+        name = os.path.basename(exe_path)
+
+    deploy_path = Path(deploy_dir) / name
+    if deploy_path.exists() and not force:
+        bail(f"{deploy_path} already exists. Re-run with {force_flag} to overwrite.")
+
+    if python:
+        deploy_path.write_text(
+            PYTHON_TEMPLATE.format(
+                pythonpath=shlex.quote((IAN_DIR / "foundation" / "python").as_posix()),
+                exe_path=shlex.quote(exe_path),
+            )
+        )
+        sh0(f"chmod +x {q(deploy_path)}")
+    else:
+        statinfo = os.stat(exe_path)
+        if not stat.S_IXUSR(statinfo):
+            bail(f"{exe_path} is not executable.")
+        os.symlink(exe_path, deploy_path)
+
+    print(deploy_path.as_posix())
+
+
+PYTHON_TEMPLATE = """\
+#!/usr/bin/env bash
+
+# WARNING: This script file was auto-generated. Do not edit by hand.
+
+export PYTHONPATH={pythonpath}
+exec python3 {exe_path} "$@"
+"""
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description="Add binaries to the PATH.")
+    ap.add_argument("exe_path")
+
+    default_bin_dir = (IAN_DIR / "bin").as_posix()
+    ap.add_argument(
+        "-to",
+        dest="deploy_dir",
+        default=default_bin_dir,
+        help=f"directory to deploy to (default: {default_bin_dir})",
+    )
+    ap.add_argument("-f", force_flag, help="overwrite destination if it already exists")
+    ap.add_argument("-name", help="defaults to name of executable")
+    ap.add_argument(
+        "-python",
+        action="store_true",
+        help="make a wrapper script to set PYTHONPATH correctly",
+    )
+    args = ap.parse_args()
+
+    main(args.exe_path, args.deploy_dir, name=args.name, python=args.python, force=args.force)
