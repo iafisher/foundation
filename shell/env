@@ -1,3 +1,5 @@
+# ATTENTION: This file is sourced by Bash and Zsh and must be compatible with both.
+
 export IAN_DIR="$HOME/.ian"
 export IAN_BASH_PRELUDE="$IAN_DIR/foundation/shell/bash_functions.sh"
 export PATH="$PATH:$IAN_DIR/foundation/bin:$IAN_DIR/bin"

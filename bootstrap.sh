@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
-
 set -eu
+
+# == TESTING ==
+# I usually use AWS CloudShell to bring up a fresh Linux environment to test this script.
+#
+#   1. Open CloudShell.
+#   2. Run `nano bootstrap.sh` and paste the script in.
+#   3. Run `bash bootstrap.sh .`
+#
+# Or, if you want to test the live script, in step 2 do `wget https://iafisher.com/bootstrap.sh`
+# instead.
 
 main() {
   if [[ $# -ne 1 ]]; then

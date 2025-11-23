@@ -1,3 +1,8 @@
+# These Bash utility functions can be imported into a script with:
+#
+#   source "$IAN_BASH_PRELUDE"
+#
+
 red() {
   echo -e "\033[31m$@\033[0m"
 }
