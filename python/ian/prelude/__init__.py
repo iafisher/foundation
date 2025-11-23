@@ -96,4 +96,5 @@ __all__ = [
     "remove_prefix",
     "remove_suffix",
     "todo",
+    "LOG",
 ]
