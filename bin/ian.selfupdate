@@ -1,0 +1,18 @@
+#!/usr/bin/env python3
+import argparse
+import os
+
+from ian.prelude import *
+from ian.scripting import *
+
+
+def main() -> None:
+    os.chdir(pathlib.Path.home() / ".ian" / "foundation")
+    sh0("git pull origin master")
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description="Update the foundation repo.")
+    ap.parse_args()
+
+    main()
