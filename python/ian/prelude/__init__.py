@@ -24,7 +24,7 @@ from typing import (
 try:
     from typing_extensions import override
 except ModuleNotFoundError:
-    pass
+    override = lambda f: f
 
 
 from .prelude import (
