@@ -66,7 +66,7 @@ if __name__ == "__main__":
         default=default_bin_dir,
         help=f"directory to deploy to (default: {default_bin_dir})",
     )
-    ap.add_argument("-f", force_flag, help="overwrite destination if it already exists")
+    ap.add_argument("-f", force_flag, action="store_true", help="overwrite destination if it already exists")
     ap.add_argument("-name", help="defaults to name of executable")
     ap.add_argument(
         "-python",
