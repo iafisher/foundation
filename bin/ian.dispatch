@@ -14,7 +14,9 @@ force_flag = "-force"
 IAN_DIR = Path.home() / ".ian"
 
 
-def main(exe_path: str, deploy_dir: str, *, name: Optional[str], python: bool, force: bool) -> None:
+def main(
+    exe_path: str, deploy_dir: str, *, name: Optional[str], python: bool, force: bool
+) -> None:
     exe_path = os.path.abspath(exe_path)
     try:
         statinfo = os.stat(exe_path)
@@ -66,7 +68,13 @@ if __name__ == "__main__":
         default=default_bin_dir,
         help=f"directory to deploy to (default: {default_bin_dir})",
     )
-    ap.add_argument("-f", force_flag, action="store_true", help="overwrite destination if it already exists")
+    ap.add_argument(
+        "-f",
+        force_flag,
+        dest="force",
+        action="store_true",
+        help="overwrite destination if it already exists",
+    )
     ap.add_argument("-name", help="defaults to name of executable")
     ap.add_argument(
         "-python",
@@ -75,4 +83,10 @@ if __name__ == "__main__":
     )
     args = ap.parse_args()
 
-    main(args.exe_path, args.deploy_dir, name=args.name, python=args.python, force=args.force)
+    main(
+        args.exe_path,
+        args.deploy_dir,
+        name=args.name,
+        python=args.python,
+        force=args.force,
+    )
