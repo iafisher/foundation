@@ -38,6 +38,11 @@ class KgError(Exception):
     def val(self, key: str) -> Any:
         return self._values[key]
 
+    def attach(self, **extra: Any) -> "KgError":
+        values = self._values.copy()
+        values.update(extra)
+        return KgError(self.args[0], **values)
+
     def to_human_str(self) -> str:
         builder: List[str] = []
         builder.append(f"{self.args[0]}")
@@ -102,7 +107,19 @@ def max_or_none(xs: Iterable[Optional[T]]) -> Optional[T]:
     return m
 
 
+# TODO(2025-11): SUBWAY: can I just use `T1` for everything?
 T1 = TypeVar("T1")
+
+
+def find_first(xs: Iterable[T1], pred: Callable[[T1], bool]) -> Optional[T1]:
+    """
+    Finds the first element of `xs` such that `pred` returns True.
+    """
+    for x in xs:
+        if pred(x):
+            return x
+
+    return None
 
 
 def flatten_list(xs: List[List[T1]]) -> List[T1]:
