@@ -37,7 +37,7 @@ def main(
                 exe_path=shlex.quote(exe_path),
             )
         )
-        sh0(f"chmod +x {q(deploy_path)}")
+        sh0(f"chmod +x {q(deploy_path.as_posix())}")
     else:
         statinfo = os.stat(exe_path)
         if not stat.S_IXUSR(statinfo):
