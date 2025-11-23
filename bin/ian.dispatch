@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python3.11
 import argparse
 import os
 import shlex
@@ -33,7 +33,10 @@ def main(
     if python:
         deploy_path.write_text(
             PYTHON_TEMPLATE.format(
-                pythonpath=shlex.quote((IAN_DIR / "foundation" / "python").as_posix()),
+                # Call `resolve` in case `~/.ian/foundation` is a symlink.
+                pythonpath=shlex.quote(
+                    (IAN_DIR / "foundation" / "python").resolve().as_posix()
+                ),
                 exe_path=shlex.quote(exe_path),
             )
         )
@@ -53,7 +56,7 @@ PYTHON_TEMPLATE = """\
 # WARNING: This script file was auto-generated. Do not edit by hand.
 
 export PYTHONPATH={pythonpath}
-exec python3 {exe_path} "$@"
+exec python3.11 {exe_path} "$@"
 """
 
 
