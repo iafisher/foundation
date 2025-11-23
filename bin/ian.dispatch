@@ -43,7 +43,7 @@ def main(
         sh0(f"chmod +x {q(deploy_path.as_posix())}")
     else:
         statinfo = os.stat(exe_path)
-        if not stat.S_IXUSR(statinfo):
+        if not (statinfo.st_mode & stat.S_IXUSR):
             bail(f"{exe_path} is not executable.")
         os.symlink(exe_path, deploy_path)
 
