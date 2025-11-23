@@ -7,10 +7,14 @@
 
 I set up a new machine with the `bootstrap.sh` script, which can be downloaded with `wget https://iafisher.com/bootstrap.sh`. (This is an HTTP redirect to the master copy of the file on GitHub, so it is always up-to-date.)
 
-`bootstrap.sh` creates two repositories: a clone of `foundation` in `~/.ian/foundation`, and a "dotfiles" repository for machine-specific configuration.
+`bootstrap.sh` creates two Git repositories: a clone of `foundation` in `~/.ian/foundation`, and a "dotfiles" repository for machine-specific configuration.
 
 - `~/.ian/bin` is added to the `PATH` environment variable.
 - `~/.ian/pythonpath` is added to `PYTHONPATH`, so that I can import the `ian` library from a Python file anywhere on the machine. 
+
+Configuration files (`~/.bashrc`, etc.) are symlinked to the dotfiles repository.
+
+The `foundation` repository can be updated by running `ian.selfupdate`.
 
 ## Requirements
 - Python 3.11
