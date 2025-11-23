@@ -45,40 +45,60 @@ main() {
     shellrc="bashrc"
   fi
 
-  echo "# This file contains machine-specific configuration." > "$shellrc"
+  (cat << EOF
+source "$HOME/.ian/foundation/shell/env"
+" This file contains machine-specific configuration.
+EOF
+) > "$shellrc"
   git add "$shellrc"
 
-  echo '" This file contains machine-specific configuration.' > vimrc
+  (cat << EOF
+source $HOME/.ian/foundation/vimrc
+" This file contains machine-specific configuration.
+EOF
+) > vimrc
   git add vimrc
+
+  (cat << EOF
+[include]
+  path = $HOME/.ian/foundation/gitconfig
+EOF
+) > gitconfig
+  git add gitconfig
 
   git config --global user.name 'Ian Fisher'
   git config --global user.email 'ian@iafisher.com'
   git commit -m "initial commit" --author 'Ian Fisher <ian@iafisher.com>'
 
-  echo "==> appending to ~/.$shellrc"
+  echo "==> configuring shell"
   f="$HOME/.$shellrc"
-  echo >> "$f"
-  echo 'source "$HOME/.ian/foundation/shell/env"' >> "$f"
-  echo 'source "'$dotfiles_dir'/'$shellrc'"' >> "$f"
-  tail "$f"
+  if [[ -e "$f" ]]; then
+    echo "WARNING: will not overwrite $f. You must either:"
+    echo "  - Run 'ln -sf $dotfiles_dir/$shellrc $f'"
+    echo "  - Add 'source $dotfiles_dir/$shellrc' to the end of the file."
+  else
+    ln -s "$dotfiles_dir/$shellrc" "$f"
+  fi
 
-  echo "==> appending to ~/.vimrc"
+  echo "==> configuring vim"
   f="$HOME/.vimrc"
-  echo >> "$f"
-  echo 'source $HOME/.ian/foundation/vimrc' >> "$f"
-  echo 'source '$dotfiles_dir'/vimrc' >> "$f"
-  tail "$f"
+  if [[ -e "$f" ]]; then
+    echo "WARNING: will not overwrite $f. You must either:"
+    echo "  - Run 'ln -sf $dotfiles_dir/vimrc $f'"
+    echo "  - Add 'source $dotfiles_dir/vimrc' to the end of the file."
+  else
+    ln -s "$dotfiles_dir/vimrc" "$f"
+  fi
 
-  echo "==> appending to ~/.gitconfig"
+  echo "==> configuring git"
   f="$HOME/.gitconfig"
-  (cat << EOF
-
-[include]
-  path = $HOME/.ian/foundation/gitconfig
-  path = $dotfiles_dir/gitconfig
-EOF
-) >> "$f"
-  tail "$f"
+  if [[ -e "$f" ]]; then
+    echo "WARNING: will not overwrite $f. You must either:"
+    echo "  - Run 'ln -sf $dotfiles_dir/gitconfig $f'"
+    echo "  - Add 'path = $dotfiles_dir/gitconfig' to an '[include]' block in the file."
+  else
+    ln -s "$dotfiles_dir/gitconfig" "$f"
+  fi
 
   echo
   echo "==> done"
