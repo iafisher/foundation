@@ -16,7 +16,7 @@ cmd = ["iprecommit-typos", "--paths"]
 [[pre_commit]]
 name = "PythonFormat"
 cmd = ["black", "--check"]
-filters = ["*.py"]
+filters = ["*.py", "bin/ian.*"]
 fix_cmd = ["black"]
 autofix = false
 fail_fast = true
