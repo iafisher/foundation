@@ -94,10 +94,10 @@ class SupportsGreaterThan(Protocol):
     def __gt__(self, _other: object) -> bool: ...
 
 
-T = TypeVar("T", bound=SupportsGreaterThan)
+T_gt = TypeVar("T_gt", bound=SupportsGreaterThan)
 
 
-def max_or_none(xs: Iterable[Optional[T]]) -> Optional[T]:
+def max_or_none(xs: Iterable[Optional[T_gt]]) -> Optional[T_gt]:
     m = None
     for x in xs:
         if x is None:
@@ -107,11 +107,11 @@ def max_or_none(xs: Iterable[Optional[T]]) -> Optional[T]:
     return m
 
 
-# TODO(2025-11): SUBWAY: can I just use `T1` for everything?
-T1 = TypeVar("T1")
+T = TypeVar("T")
+T2 = TypeVar("T2")
 
 
-def find_first(xs: Iterable[T1], pred: Callable[[T1], bool]) -> Optional[T1]:
+def find_first(xs: Iterable[T], pred: Callable[[T], bool]) -> Optional[T]:
     """
     Finds the first element of `xs` such that `pred` returns True.
     """
@@ -122,22 +122,15 @@ def find_first(xs: Iterable[T1], pred: Callable[[T1], bool]) -> Optional[T1]:
     return None
 
 
-def flatten_list(xs: List[List[T1]]) -> List[T1]:
+def flatten_list(xs: List[List[T]]) -> List[T]:
     return list(itertools.chain.from_iterable(xs))
 
 
-T2 = TypeVar("T2")
-T3 = TypeVar("T3")
-
-
-def map_or_none(x: Optional[T2], f: Callable[[T2], T3]) -> Optional[T3]:
+def map_or_none(x: Optional[T], f: Callable[[T], T2]) -> Optional[T2]:
     return f(x) if x is not None else None
 
 
-T4 = TypeVar("T4")
-
-
-def map_str_or_none(x: Optional[str], f: Callable[[str], T4]) -> Optional[T4]:
+def map_str_or_none(x: Optional[str], f: Callable[[str], T]) -> Optional[T]:
     return f(x) if x else None
 
 
@@ -152,15 +145,12 @@ class StringEnum(enum.Enum):
         raise ValueError(s)
 
 
-T5 = TypeVar("T5")
-
-
-class lazy(Generic[T5]):
-    def __init__(self, f: Callable[[], T5]):
+class lazy(Generic[T]):
+    def __init__(self, f: Callable[[], T]):
         self.f = f
         self.value = NOTHING
 
-    def get(self) -> T5:
+    def get(self) -> T:
         if self.value is NOTHING:
             self.value = self.f()
         return self.value  # type: ignore
