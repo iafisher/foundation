@@ -21,6 +21,12 @@ fix_cmd = ["black"]
 autofix = false
 fail_fast = true
 
+[[pre_commit]]
+name = "PythonTypesPyright"
+cmd = ["pyright"]
+filters = ["*.py"]
+pass_files = false
+
 # commit-msg checks
 [[commit_msg]]
 name = "CommitMessageFormat"
