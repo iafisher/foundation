@@ -51,8 +51,9 @@ command! TrimWhitespace call TrimWhitespace()
 
 augroup foundation_language_settings
   autocmd!
-  autocmd FileType c,cpp,css,fortran,html,javascript,json,sh,typescript,vue,zsh setlocal expandtab shiftwidth=2 tabstop=2
+  autocmd FileType c,cpp,css,fortran,html,javascript,json,sh,typescript,vue,zsh setlocal expandtab shiftwidth=2 tabstop=2 foldmethod=syntax foldlevel=999
   autocmd FileType rust,python setlocal expandtab shiftwidth=4 tabstop=4
+  autocmd FileType python setlocal foldmethod=indent foldlevel=999
   autocmd FileType go setlocal noexpandtab shiftwidth=4 tabstop=4
   " Highlight when line in git commit > 72 chars
   au FileType gitcommit set tw=72
