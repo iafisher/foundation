@@ -21,12 +21,6 @@ from typing import (
     Union,
 )
 
-try:
-    from typing_extensions import override
-except ModuleNotFoundError:
-    override = lambda f: f
-
-
 from .prelude import (
     KgError,
     PathLike,
@@ -46,6 +40,7 @@ from .prelude import (
     map_or_none,
     map_str_or_none,
     max_or_none,
+    override,
     pluralize,
     remove_prefix,
     remove_suffix,

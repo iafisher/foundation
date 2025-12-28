@@ -18,7 +18,36 @@ from typing import (
     runtime_checkable,
 )
 
-NOTHING = object()
+try:
+    from typing_extensions import override
+except ModuleNotFoundError:
+    override: Callable[..., Any] = lambda f: f
+
+
+class Nothing:
+    """
+    A subclass of `object` that exists only to signal the absence of a value.
+
+    Typically this is used as a default argument for function parameters, to distinguish between
+    "no value was passed" and "the value `None` was passed".
+
+    This is its own class to override `repr`, as `object.__repr__` includes the object's memory
+    address which is not stable for test output.
+
+    The `Nothing` class is not exposed; you should use the singleton `NOTHING` object which is
+    exported from the prelude.
+    """
+
+    @override
+    def __eq__(self, other: Any) -> bool:
+        return isinstance(other, Nothing)
+
+    @override
+    def __repr__(self) -> str:
+        return "<nothing>"
+
+
+NOTHING = Nothing()
 
 StrDict = Dict[str, Any]
 PathLike = Union[os.PathLike[str], str]
