@@ -55,7 +55,7 @@ def eprint(*args: Any, **kwargs: Any) -> None:
     print(*args, file=sys.stderr, **kwargs)
 
 
-def bail(*args: Any, **kwargs: Any) -> None:
+def bail(*args: Any, **kwargs: Any) -> NoReturn:
     eprint(*args, **kwargs)
     sys.exit(1)
 
