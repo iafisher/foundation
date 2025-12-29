@@ -3,6 +3,7 @@ import itertools
 import os
 import re
 import sys
+from dataclasses import dataclass
 from typing import (
     Any,
     Callable,
@@ -24,6 +25,7 @@ except ModuleNotFoundError:
     override: Callable[..., Any] = lambda f: f
 
 
+@dataclass(frozen=True)
 class Nothing:
     """
     A subclass of `object` that exists only to signal the absence of a value.
@@ -34,17 +36,13 @@ class Nothing:
     This is its own class to override `repr`, as `object.__repr__` includes the object's memory
     address which is not stable for test output.
 
+    It is a dataclass for the sake of automatically deriving `__repr__` and `__eq__`, as well as
+    to specify `frozen=True` which allows objects of its type to be used as the default value of
+    fields on other dataclasses.
+
     The `Nothing` class is not exposed; you should use the singleton `NOTHING` object which is
     exported from the prelude.
     """
-
-    @override
-    def __eq__(self, other: Any) -> bool:
-        return isinstance(other, Nothing)
-
-    @override
-    def __repr__(self) -> str:
-        return "<nothing>"
 
 
 NOTHING = Nothing()
