@@ -110,6 +110,10 @@ EOF
 
   echo
   echo "==> done"
+  # TODO(2026-01): On a fresh Rocky Linux 9 instance from Digital Ocean, this fails with
+  #
+  #   /etc/bashrc: line 12: BASHRCSOURCED: unbound variable
+  #
   source "$HOME/.$shellrc"
 }
 
