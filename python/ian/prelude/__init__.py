@@ -44,6 +44,7 @@ from .prelude import (
     pluralize,
     remove_prefix,
     remove_suffix,
+    sha256,
     todo,
 )
 

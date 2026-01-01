@@ -1,4 +1,5 @@
 import enum
+import hashlib
 import itertools
 import os
 import re
@@ -185,6 +186,10 @@ class lazy(Generic[T]):
 
 def lazy_re(pat: str, *args: Any, **kwargs: Any) -> lazy[re.Pattern[str]]:
     return lazy(lambda: re.compile(pat, *args, **kwargs))
+
+
+def sha256(s: str) -> str:
+    return hashlib.sha256(s.encode("utf8")).hexdigest()
 
 
 def confirm(prompt: str) -> bool:
