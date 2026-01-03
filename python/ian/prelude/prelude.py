@@ -192,6 +192,10 @@ def sha256(s: str) -> str:
     return hashlib.sha256(s.encode("utf8")).hexdigest()
 
 
+def sha256b(b: bytes) -> str:
+    return hashlib.sha256(b).hexdigest()
+
+
 def confirm(prompt: str) -> bool:
     while True:
         r = input(prompt).strip().lower()

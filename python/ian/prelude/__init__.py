@@ -45,6 +45,7 @@ from .prelude import (
     remove_prefix,
     remove_suffix,
     sha256,
+    sha256b,
     todo,
 )
 
@@ -94,6 +95,7 @@ __all__ = [
     "remove_prefix",
     "remove_suffix",
     "sha256",
+    "sha256b",
     "todo",
     "LOG",
 ]
