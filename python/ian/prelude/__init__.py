@@ -93,6 +93,7 @@ __all__ = [
     "pluralize",
     "remove_prefix",
     "remove_suffix",
+    "sha256",
     "todo",
     "LOG",
 ]
