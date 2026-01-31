@@ -23,6 +23,7 @@ from typing import (
 
 from .prelude import (
     KgError,
+    Nothing,
     PathLike,
     StrDict,
     StringEnum,

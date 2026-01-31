@@ -40,9 +40,6 @@ class Nothing:
     It is a dataclass for the sake of automatically deriving `__repr__` and `__eq__`, as well as
     to specify `frozen=True` which allows objects of its type to be used as the default value of
     fields on other dataclasses.
-
-    The `Nothing` class is not exposed; you should use the singleton `NOTHING` object which is
-    exported from the prelude.
     """
 
 
