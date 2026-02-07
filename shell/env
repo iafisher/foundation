@@ -77,3 +77,6 @@ alias g="git"
 alias ga="git add ."
 alias gd="git diff HEAD"
 alias gs="git status"
+
+# Run a single command with `set -x` (to print command invocation).
+x() { ( set -x; "$@" ); }
