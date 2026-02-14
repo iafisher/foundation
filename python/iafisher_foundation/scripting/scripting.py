@@ -1,7 +1,7 @@
 import subprocess
 
-from ian import colors
-from ian.prelude import *
+from .. import colors
+from ..prelude import *
 
 
 def sh0(cmd: str, check: bool = True, **kwargs: Any) -> None:

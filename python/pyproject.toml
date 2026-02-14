@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "iafisher-foundation"
-version = "0.1.2"
+version = "0.1.3"
 description = "iafisher's utility libraries for Python"
 authors = ["Ian Fisher <ian@iafisher.com>"]
 license = "MIT"
 homepage = "https://github.com/iafisher/foundation"
 repository = "https://github.com/iafisher/foundation"
 packages = [
-    { include = "ian" }
+    { include = "iafisher_foundation" }
 ]
 include = ["ian/py.typed"]
 

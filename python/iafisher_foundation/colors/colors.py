@@ -1,4 +1,4 @@
-from ian.prelude import *
+from ..prelude import *
 
 
 def print_(*args: Any, file: Optional[SupportsWrite] = None, **kwargs: Any) -> None:
