@@ -7,7 +7,7 @@ license = "MIT"
 homepage = "https://github.com/iafisher/foundation"
 repository = "https://github.com/iafisher/foundation"
 packages = [
-    { include = "ian" }
+    { include = "iafisher_foundation" }
 ]
 include = ["ian/py.typed"]
 
