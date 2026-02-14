@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "iafisher-foundation"
+version = "0.1.0"
+description = "iafisher's utility libraries for Python"
+authors = ["Ian Fisher <ian@iafisher.com>"]
+license = "MIT"
+homepage = "https://github.com/iafisher/foundation"
+repository = "https://github.com/iafisher/foundation"
+packages = [
+    { include = "ian" }
+]
+include = ["ian/py.typed"]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
