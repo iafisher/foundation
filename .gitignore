@@ -13,7 +13,9 @@ __pycache__
 .mypy_cache
 .venv
 python/dist
+/dist
 *.egg-info
+poetry.lock
 
 # JavaScript
 node_modules/

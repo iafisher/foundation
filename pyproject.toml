@@ -7,12 +7,15 @@ license = "MIT"
 homepage = "https://github.com/iafisher/foundation"
 repository = "https://github.com/iafisher/foundation"
 packages = [
-    { include = "iafisher_foundation" }
+    { include = "iafisher_foundation", from = "python" }
 ]
 include = ["ian/py.typed"]
 
 [tool.poetry.dependencies]
 python = "^3.11"
+
+[tool.poetry.group.dev.dependencies]
+expecttest = "^0.3.0"
 
 [build-system]
 requires = ["poetry-core"]
