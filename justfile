@@ -15,7 +15,7 @@ publish-to-pypi:
     echo "aborting: local branch is not in sync with upstream"
     exit 1
   fi
-  echo poetry publish --build
+  poetry publish --build
 
 [working-directory: 'python']
 test:
