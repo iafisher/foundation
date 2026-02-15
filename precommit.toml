@@ -27,6 +27,12 @@ cmd = ["pyright"]
 filters = ["*.py"]
 pass_files = false
 
+[[pre_commit]]
+name = "PythonTests"
+cmd = ["just", "test"]
+filters = ["*.py"]
+pass_files = false
+
 # commit-msg checks
 [[commit_msg]]
 name = "CommitMessageFormat"
