@@ -23,7 +23,7 @@ fail_fast = true
 
 [[pre_commit]]
 name = "PythonTypesPyright"
-cmd = ["pyright"]
+cmd = ["bash", "-c", "source python/.venv/bin/activate && pyright"]
 filters = ["*.py"]
 pass_files = false
 

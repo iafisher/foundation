@@ -21,7 +21,7 @@ from typing import (
 )
 
 try:
-    from typing_extensions import override
+    from typing_extensions import override  # type: ignore
 except ModuleNotFoundError:
     override: Callable[..., Any] = lambda f: f
 
