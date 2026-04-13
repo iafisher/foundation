@@ -108,6 +108,9 @@ EOF
   echo "==> configuring git"
   make_symlink "$HOME/.gitconfig" "$dotfiles_dir/gitconfig"
 
+  echo "==> configuring tmux"
+  make_symlink "$HOME/.tmux.conf" "$dotfiles_dir/tmux.conf"
+
   echo
   echo "==> done"
   # TODO(2026-01): On a fresh Rocky Linux 9 instance from Digital Ocean, this fails with
