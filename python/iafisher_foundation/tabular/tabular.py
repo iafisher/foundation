@@ -1,3 +1,5 @@
+from typing import TypeVar
+
 from .. import colors
 from ..prelude import *
 
@@ -5,16 +7,18 @@ from ..prelude import *
 class Table:
     _widths: List[int]
     _rows: List[List[str]]
-    _n: int
     _numformat: str
+    _allow_jagged_rows: bool
 
     DEFAULT_SPACING = 2
 
-    def __init__(self, *, numformat: str = "{}") -> None:
+    def __init__(
+        self, *, numformat: str = "{}", allow_jagged_rows: bool = False
+    ) -> None:
         self._widths: List[int] = []
         self._rows: List[List[str]] = []
-        self._n = 0
         self._numformat = numformat
+        self._allow_jagged_rows = allow_jagged_rows
 
     def header(self, items: List[Any]) -> None:
         self.row(items, color=colors.yellow)
@@ -22,15 +26,13 @@ class Table:
     def row(
         self, items: List[Any], *, color: Optional[Callable[[str], str]] = None
     ) -> None:
-        if len(self._rows) == 0:
-            if not items:
-                raise KgError("first row cannot be empty")
-
-            self._n = len(items)
-        else:
-            if len(items) != self._n:
+        if len(self._rows) > 0 and len(items) != len(self._widths):
+            if not self._allow_jagged_rows:
                 raise KgError(
-                    "row wrong length", expected=self._n, actual=len(items), items=items
+                    "row wrong length",
+                    expected=len(self._widths),
+                    actual=len(items),
+                    items=items,
                 )
 
         items_as_str: List[str] = []
@@ -70,32 +72,40 @@ class Table:
     def to_string(self, *, spacing: int = 2, align: Optional[List[str]] = None) -> str:
         return "\n".join(self._to_list_iter(spacing=spacing, align=align)) + "\n"
 
+    def ncols(self) -> int:
+        return len(self._widths)
+
     def _to_list_iter(
         self, *, spacing: int, align: Optional[List[str]] = None
     ) -> Generator[str, None, None]:
         spaces = " " * spacing
 
         if align is not None:
-            if len(align) != self._n:
+            align = align.copy()
+        else:
+            align = []
+
+        if len(align) != self.ncols():
+            if len(align) == 0 or self._allow_jagged_rows:
+                extend_in_place(align, self.ncols(), "l")
+            else:
                 raise KgError(
                     "alignment list must match number of columns",
-                    expected=self._n,
+                    expected=self.ncols(),
                     actual=len(align),
                 )
 
-            valid_alignments = {"l", "c", "r"}
-            if not all(a in valid_alignments for a in align):
-                raise KgError(
-                    "invalid alignment values",
-                    valid_values=list(valid_alignments),
-                    provided=align,
-                )
+        valid_alignments = {"l", "c", "r"}
+        if not all(a in valid_alignments for a in align):
+            raise KgError(
+                "invalid alignment values",
+                valid_values=list(valid_alignments),
+                provided=align,
+            )
 
         for row in self._rows:
             line_builder: List[str] = []
-            for item, width, alignment in zip(
-                row, self._widths, align or ["l"] * self._n
-            ):
+            for item, width, alignment in zip(row, self._widths, align):
                 if alignment == "l":
                     formatted = left_justify(item, width)
                 elif alignment == "r":
@@ -111,6 +121,7 @@ class Table:
         if len(self._widths) == 0:
             self._widths = [display_width(item) for item in items]
         else:
+            extend_in_place(self._widths, len(items), 0)
             for i in range(len(items)):
                 self._widths[i] = max(display_width(items[i]), self._widths[i])
 
@@ -124,6 +135,15 @@ class Table:
                 return i
 
         raise KgError("sort column not found", column=column, options=header)
+
+
+T = TypeVar("T")
+
+
+def extend_in_place(xs: List[T], n: int, default: T) -> None:
+    diff = n - len(xs)
+    if diff > 0:
+        xs.extend([default] * diff)
 
 
 def display_width(s: str) -> int:

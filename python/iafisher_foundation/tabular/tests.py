@@ -41,3 +41,24 @@ class Test(unittest.TestCase):
             ),
             buffer.getvalue(),
         )
+
+    def test_jagged_rows(self):
+        table = Table(allow_jagged_rows=True)
+        table.row(["Nevada"])
+        table.row(["North", "Carolina"])
+        table.row(["North", "Dakota"])
+        table.row(["Oklahoma"])
+
+        buffer = StringIO()
+        table.flush(file=buffer)
+        self.assertEqual(
+            dedent(
+                """\
+                Nevada
+                North     Carolina
+                North     Dakota
+                Oklahoma
+                """
+            ),
+            buffer.getvalue(),
+        )
