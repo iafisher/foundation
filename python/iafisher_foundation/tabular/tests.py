@@ -1,3 +1,4 @@
+import decimal
 import unittest
 from io import StringIO
 from textwrap import dedent
@@ -58,6 +59,20 @@ class Test(unittest.TestCase):
                 North     Carolina
                 North     Dakota
                 Oklahoma
+                """
+            ),
+            buffer.getvalue(),
+        )
+
+    def test_numformat(self):
+        table = Table(numformat="{:,.1f}")
+        table.row([1000, 1000.0, decimal.Decimal("1000")])
+        buffer = StringIO()
+        table.flush(file=buffer)
+        self.assertEqual(
+            dedent(
+                """\
+                1,000.0  1,000.0  1,000.0
                 """
             ),
             buffer.getvalue(),

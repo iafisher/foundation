@@ -1,3 +1,4 @@
+import decimal
 from typing import TypeVar
 
 from .. import colors
@@ -37,7 +38,7 @@ class Table:
 
         items_as_str: List[str] = []
         for item in items:
-            if isinstance(item, int):
+            if isinstance(item, (int, float, decimal.Decimal)):
                 item = self._numformat.format(item)
             else:
                 item = str(item)
