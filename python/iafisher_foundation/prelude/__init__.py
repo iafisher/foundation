@@ -39,7 +39,6 @@ from .prelude import (
     lazy,
     lazy_re,
     map_or_none,
-    map_str_or_none,
     max_or_none,
     opt_call,
     opt_call_or,
@@ -52,7 +51,6 @@ from .prelude import (
     remove_suffix,
     sha256,
     sha256b,
-    stropt_call,
     todo,
 )
 
@@ -97,7 +95,6 @@ __all__ = [
     "lazy",
     "lazy_re",
     "map_or_none",
-    "map_str_or_none",
     "max_or_none",
     "opt_call",
     "opt_call_or",
@@ -109,7 +106,6 @@ __all__ = [
     "remove_suffix",
     "sha256",
     "sha256b",
-    "stropt_call",
     "todo",
     "LOG",
 ]
