@@ -112,12 +112,16 @@ class TypeAnnotation:
             StringEnum,
             pathlib.Path,
             decimal.Decimal,
+            datetime.date,
         ]
         if extra.converter is None and (
             typing.get_origin(base_type_if_newtype) is not None
             or not any(issubclass(base_type_if_newtype, t) for t in supported_types)
         ):
             raise CmdError(f"type `{base_type!r}` is not supported")
+
+        if issubclass(base_type_if_newtype, datetime.date) and extra.converter is None:
+            extra = dataclasses.replace(extra, converter=datetime.date.fromisoformat)
 
         if base_type is bool:
             if is_list:

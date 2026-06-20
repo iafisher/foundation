@@ -214,6 +214,18 @@ class Test(TestCase):
         result = dispatch(cmd, argv=["my-cmd", "-sym", "xyz"], bail_on_error=False)
         self.assertExpectedInline(pprint.pformat(result), """{'sym': 'xyz'}""")
 
+    def test_date_flag(self):
+        def f(*, date: datetime.date) -> Any:
+            return dict(date=date)
+
+        cmd = Command.from_function(f)
+        result = dispatch(
+            cmd, argv=["my-cmd", "-date", "2026-01-01"], bail_on_error=False
+        )
+        self.assertExpectedInline(
+            pprint.pformat(result), """{'date': datetime.date(2026, 1, 1)}"""
+        )
+
     def test_mutex(self):
         mutex = Mutex()
 
