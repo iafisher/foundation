@@ -14,6 +14,7 @@ import traceback
 import types
 import typing
 import uuid
+from typing import NewType
 
 from .. import colors, tabular, timehelper
 from ..prelude import *
@@ -97,6 +98,12 @@ class TypeAnnotation:
         else:
             is_list = False
 
+        base_type_if_newtype: Any
+        if isinstance(base_type, NewType):
+            base_type_if_newtype = base_type.__supertype__
+        else:
+            base_type_if_newtype = base_type
+
         supported_types = [
             int,
             float,
@@ -107,8 +114,8 @@ class TypeAnnotation:
             decimal.Decimal,
         ]
         if extra.converter is None and (
-            typing.get_origin(base_type) is not None
-            or not any(issubclass(base_type, t) for t in supported_types)
+            typing.get_origin(base_type_if_newtype) is not None
+            or not any(issubclass(base_type_if_newtype, t) for t in supported_types)
         ):
             raise CmdError(f"type `{base_type!r}` is not supported")
 

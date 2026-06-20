@@ -1,5 +1,5 @@
 import pprint
-from typing import Annotated
+from typing import Annotated, NewType
 
 from expecttest import TestCase
 
@@ -203,6 +203,16 @@ class Test(TestCase):
 
         result = dispatch(cmd, argv=["my-cmd", "arg"], bail_on_error=False)
         self.assertExpectedInline(pprint.pformat(result), """{'a': 'arg'}""")
+
+    def test_newtype(self):
+        Symbol = NewType("Symbol", str)
+
+        def f(*, sym: Symbol) -> Any:
+            return dict(sym=sym)
+
+        cmd = Command.from_function(f)
+        result = dispatch(cmd, argv=["my-cmd", "-sym", "xyz"], bail_on_error=False)
+        self.assertExpectedInline(pprint.pformat(result), """{'sym': 'xyz'}""")
 
     def test_mutex(self):
         mutex = Mutex()
