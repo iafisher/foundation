@@ -1,3 +1,4 @@
+import datetime
 import enum
 import hashlib
 import itertools
@@ -15,6 +16,7 @@ from typing import (
     NoReturn,
     Optional,
     Protocol,
+    Tuple,
     TypeVar,
     Union,
     runtime_checkable,
@@ -151,12 +153,38 @@ def flatten_list(xs: List[List[T]]) -> List[T]:
     return list(itertools.chain.from_iterable(xs))
 
 
-def map_or_none(x: Optional[T], f: Callable[[T], T2]) -> Optional[T2]:
+def opt_call(x: Optional[T], f: Callable[[T], T2]) -> Optional[T2]:
     return f(x) if x is not None else None
 
 
-def map_str_or_none(x: Optional[str], f: Callable[[str], T]) -> Optional[T]:
+def opt_call_or(x: Optional[T], f: Callable[[T], T2], default: T2) -> Optional[T2]:
+    return f(x) if x is not None else default
+
+
+def opt_or(x: Optional[T], default: T) -> T:
+    return x if x is not None else default
+
+
+def stropt_call(x: Optional[str], f: Callable[[str], T]) -> Optional[T]:
     return f(x) if x else None
+
+
+# 2026-06: Old names retained for backwards compatibility.
+map_or_none = opt_call
+map_str_or_none = stropt_call
+
+
+def partition_tf(xs: List[T], f: Callable[[T], bool]) -> Tuple[List[T], List[T]]:
+    left: List[T] = []
+    right: List[T] = []
+
+    for x in xs:
+        if f(x):
+            left.append(x)
+        else:
+            right.append(x)
+
+    return left, right
 
 
 class StringEnum(enum.Enum):
@@ -191,6 +219,10 @@ def sha256(s: str) -> str:
 
 def sha256b(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
+
+
+def parse_date(s: str) -> datetime.date:
+    return datetime.date.fromisoformat(s)
 
 
 def confirm(prompt: str) -> bool:
