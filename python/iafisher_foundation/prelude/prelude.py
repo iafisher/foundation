@@ -240,6 +240,20 @@ def partition_tf(xs: List[T], f: Callable[[T], bool]) -> Tuple[List[T], List[T]]
     return left, right
 
 
+def split_pairs(xs: List[Tuple[T, T2]]) -> Tuple[List[T], List[T2]]:
+    """
+    Splits a list of pairs into a pair of lists.
+    """
+    left: List[T] = []
+    right: List[T2] = []
+
+    for x1, x2 in xs:
+        left.append(x1)
+        right.append(x2)
+
+    return left, right
+
+
 class StringEnum(enum.Enum):
     @classmethod
     def of_string(cls, s: str) -> "StringEnum":
