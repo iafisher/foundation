@@ -54,12 +54,15 @@ from .prelude import (
     todo,
 )
 
+dt = datetime
+
 LOG = logging.getLogger("default")
 del logging
 
 __all__ = [
     "dataclasses",
     "datetime",
+    "dt",
     "enum",
     "os",
     "pathlib",
