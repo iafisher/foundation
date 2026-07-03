@@ -1,4 +1,4 @@
-import datetime
+import datetime as dt
 import enum
 import hashlib
 import itertools
@@ -304,13 +304,25 @@ def sha256b(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
 
 
-def parse_date(s: str) -> datetime.date:
+def parse_date(s: str) -> dt.date:
     """
     Parses a string into a `datetime.date` object.
 
     Currently only supports ISO-8601 format (YYYY-MM-DD).
     """
-    return datetime.date.fromisoformat(s)
+    return dt.date.fromisoformat(s)
+
+
+def seconds(x: float) -> dt.timedelta:
+    return dt.timedelta(seconds=x)
+
+
+def minutes(x: float) -> dt.timedelta:
+    return dt.timedelta(minutes=x)
+
+
+def hours(x: float) -> dt.timedelta:
+    return dt.timedelta(hours=x)
 
 
 def confirm(prompt: str) -> bool:
