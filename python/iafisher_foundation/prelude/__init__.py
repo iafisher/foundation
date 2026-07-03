@@ -9,6 +9,7 @@ import sys
 from collections import OrderedDict
 from dataclasses import dataclass
 from typing import (
+    Annotated,
     Any,
     Callable,
     Dict,
@@ -70,6 +71,7 @@ __all__ = [
     "sys",
     "OrderedDict",
     "dataclass",
+    "Annotated",
     "Any",
     "Callable",
     "Dict",
