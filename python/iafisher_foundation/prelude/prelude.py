@@ -202,7 +202,7 @@ def opt_call(x: Optional[T], f: Callable[[T], T2]) -> Optional[T2]:
     return f(x) if x is not None else None
 
 
-def opt_call_or(x: Optional[T], f: Callable[[T], T2], default: T2) -> Optional[T2]:
+def opt_call_or(x: Optional[T], f: Callable[[T], T2], default: T2) -> T2:
     """
     Returns `f(x)` if `x` is not None, otherwise `default`.
     """
@@ -217,6 +217,13 @@ def opt_or(x: Optional[T], default: T) -> T:
     values like 0 and the empty string.
     """
     return x if x is not None else default
+
+
+def opt_or_thunk(x: Optional[T], callable: Callable[[], T]) -> T:
+    """
+    Returns `x` if not None, otherwise calls `callable` and returns the result.
+    """
+    return x if x is not None else callable()
 
 
 # 2026-06: Old name retained for backwards compatibility.
