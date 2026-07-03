@@ -22,3 +22,10 @@ The `foundation` repository can be updated by running `ian.selfupdate`.
 - Git
 
 `foundation` does not require root access or the ability to install software.
+
+## Publishing a new version
+1. Update `version` in `pyproject.toml` and make a commit (e.g., `vresion 0.1.9`).
+2. Run `git push`.
+3. Run `just publish-to-pypi`.
+4. Create a release on Github.
+5. Run `git pull --tags`.
