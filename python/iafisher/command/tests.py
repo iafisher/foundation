@@ -5,7 +5,17 @@ from expecttest import TestCase
 
 from ..prelude import *
 
-from .command import CmdError, Command, Extra, Group, Mutex, dispatch, _parse
+from .command import (
+    CmdError,
+    CmdHelpError,
+    CmdVersionError,
+    Command,
+    Extra,
+    Group,
+    Mutex,
+    dispatch,
+    _parse,
+)
 
 
 def parse(cmd_or_group: Any, *, argv: List[str]) -> Tuple[Any, Dict[str, Any]]:
@@ -349,6 +359,52 @@ class Test(TestCase):
             pprint.pformat(result), """{'a': 'arg', 'b': 'arg2'}"""
         )
 
+    def test_help_flag(self):
+        def f() -> Any:
+            return None
+
+        cmd = Command.from_function(f)
+
+        def _dispatch(flag_name: str) -> None:
+            dispatch(
+                cmd,
+                argv=["my-cmd", flag_name],
+                bail_on_error=False,
+                print_help_and_version_messages=False,
+            )
+
+        with self.assertRaises(CmdHelpError):
+            _dispatch("-h")
+
+        with self.assertRaises(CmdHelpError):
+            _dispatch("-?")
+
+        with self.assertRaises(CmdHelpError):
+            _dispatch("-help")
+
+        with self.assertRaises(CmdHelpError):
+            _dispatch("--help")
+
+    def test_version_flag(self):
+        def f() -> Any:
+            return None
+
+        cmd = Command.from_function(f)
+
+        def _dispatch(flag_name: str) -> None:
+            dispatch(
+                cmd,
+                argv=["my-cmd", flag_name],
+                bail_on_error=False,
+                print_help_and_version_messages=False,
+            )
+
+        with self.assertRaises(CmdVersionError):
+            _dispatch("-version")
+
+        with self.assertRaises(CmdVersionError):
+            _dispatch("--version")
+
     def test_passthrough(self):
         def f(args: Annotated[List[str], Extra(passthrough=True)]) -> Any:
             return dict(args=args)
@@ -362,6 +418,25 @@ class Test(TestCase):
         self.assertExpectedInline(
             pprint.pformat(result),
             """{'args': ['restic', '--dry-run', '/home/user/documents']}""",
+        )
+
+        # does not swallow help flag
+        with self.assertRaises(CmdHelpError):
+            dispatch(
+                cmd,
+                argv=["my-cmd", "-h"],
+                bail_on_error=False,
+                print_help_and_version_messages=False,
+            )
+
+        result = dispatch(
+            cmd,
+            argv=["my-cmd", "restic", "--", "--help"],
+            bail_on_error=False,
+        )
+        self.assertExpectedInline(
+            pprint.pformat(result),
+            """{'args': ['restic', '--', '--help']}""",
         )
 
     def test_converter(self):

@@ -475,6 +475,7 @@ def dispatch(
     *,
     argv: Optional[List[str]] = None,
     bail_on_error: bool = True,
+    print_help_and_version_messages: bool = True,
     log_init: Optional[Callable[[int], None]] = None,
 ) -> Any:
     if argv is None:
@@ -485,6 +486,9 @@ def dispatch(
             cmd_or_group, argv=argv, bail_on_error=bail_on_error
         )
     except CmdHelpError as e:
+        if not print_help_and_version_messages:
+            raise
+
         program_name = None
         if cmd_or_group.program:
             program_name = cmd_or_group.program
@@ -498,6 +502,9 @@ def dispatch(
             colors.error(e.message)
             sys.exit(1)
     except CmdVersionError:
+        if not print_help_and_version_messages:
+            raise
+
         print(get_version())
     else:
         if log_init is not None:
@@ -575,10 +582,19 @@ class SpecAndValue:
     is_set: bool
 
 
+END_OF_FLAGS_MARKER = "--"
+
+
 def _parse_command(
     cmd: Command, argv: List[str], index: int
 ) -> Tuple[Handler, ParseResult]:
     if cmd._passthrough is not None:
+        for arg in argv:
+            if _is_help_flag(arg):
+                raise CmdHelpError(cmd, index)
+            elif arg == END_OF_FLAGS_MARKER:
+                break
+
         return cmd._handler, ParseResult(
             args={cmd._passthrough: argv[index:]},
             kwargs={},
@@ -643,15 +659,16 @@ def _parse_command(
 
         return r
 
-    # becomes True when '--' is seen
+    # becomes True when the end of flags marker is seen
     done_with_flags = False
+    original_index = index
     while index < len(argv):
         arg = argv[index]
-        if arg == "--":
+        if arg == END_OF_FLAGS_MARKER:
             done_with_flags = True
             index += 1
         elif not done_with_flags and _is_help_flag(arg):
-            raise CmdHelpError(cmd, index)
+            raise CmdHelpError(cmd, original_index)
         elif not done_with_flags and _is_version_flag(arg):
             raise CmdVersionError
         elif not done_with_flags and _is_flag(arg):
