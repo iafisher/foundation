@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "iafisher"
-version = "0.1.10"
+version = "0.1.11"
 description = "iafisher's utility libraries for Python"
 authors = ["Ian Fisher <ian@iafisher.com>"]
 license = "MIT"
