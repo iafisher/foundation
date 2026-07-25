@@ -20,3 +20,6 @@ publish-to-pypi:
 [working-directory: 'python']
 test:
   .venv/bin/python3 -m unittest discover -s iafisher -t .
+
+test-accept:
+  EXPECTTEST_ACCEPT=1 just test
