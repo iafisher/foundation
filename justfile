@@ -19,4 +19,4 @@ publish-to-pypi:
 
 [working-directory: 'python']
 test:
-  .venv/bin/python3 -m unittest discover -s iafisher_foundation -t .
+  .venv/bin/python3 -m unittest discover -s iafisher -t .
