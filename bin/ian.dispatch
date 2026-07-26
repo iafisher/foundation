@@ -5,8 +5,8 @@ import shlex
 import stat
 from pathlib import Path
 
-from ian.prelude import *
-from ian.scripting import *
+from iafisher.prelude import *
+from iafisher.scripting import *
 
 
 force_flag = "-force"

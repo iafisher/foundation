@@ -2,8 +2,8 @@
 import argparse
 import os
 
-from ian.prelude import *
-from ian.scripting import *
+from iafisher.prelude import *
+from iafisher.scripting import *
 
 
 def main() -> None:
