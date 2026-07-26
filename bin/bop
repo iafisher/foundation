@@ -1,0 +1,15 @@
+#!/usr/bin/env python3
+from iafisher import command
+from iafisher.prelude import *
+
+
+def main_replace() -> None:
+    todo()
+
+
+cmd = command.Group(help="Batch operations for the filesystem.")
+cmd.add2("replace", main_replace)
+
+
+if __name__ == "__main__":
+    command.dispatch(cmd)
